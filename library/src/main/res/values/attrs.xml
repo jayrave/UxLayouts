@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="UxLayout_Layout">
+        <attr name="ux_layout_role" format="enum">
+            <enum name="loading" value="0"/>
+            <enum name="content" value="1"/>
+            <enum name="empty_state" value="2"/>
+            <enum name="error" value="3"/>
+            <enum name="retry" value="4"/>
+        </attr>
+    </declare-styleable>
+
+</resources>
