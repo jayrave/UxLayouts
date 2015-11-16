@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">UxLayouts</string>
+    <string name="disc_full_error">You can now without a lot of work show helpful messages like - "The disc is full!! Please clear some space and try again"</string>
+    <string name="empty_state_text">Empty state - There is nothing to show except this!!</string>
+    <string name="load_and_show_content">Load and show content</string>
+    <string name="load_and_show_empty_state">Load and show empty state</string>
+    <string name="load_and_show_error">Load and show error</string>
+    <string name="load_and_show_retry">Load and show retry</string>
+    <string name="try_again">Try again</string>
 </resources>

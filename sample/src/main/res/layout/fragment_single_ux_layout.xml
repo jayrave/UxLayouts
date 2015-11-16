@@ -1,13 +1,62 @@
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jayrave.uxLayouts.sample.SingleUxLayoutFragment">
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-    <ImageView
+    <Spinner
+        android:id="@+id/modes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.jayrave.uxLayouts.UxPercentFrameLayout
+        android:id="@+id/ux_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/image1"/>
+        tools:context="com.jayrave.uxLayouts.sample.SingleUxLayoutFragment">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/content_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/image1"
+            app:ux_layout_role="content"/>
+
+        <ProgressBar
+            android:id="@+id/loading_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:ux_layout_role="loading"/>
+
+        <TextView
+            android:id="@+id/empty_state_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/empty_state_text"
+            app:ux_layout_role="empty_state"/>
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/error_view"
+            android:layout_width="@dimen/error_icon_dimen"
+            android:layout_height="@dimen/error_icon_dimen"
+            android:layout_gravity="center"
+            app:iiv_icon="gmd-disc-full"
+            app:ux_layout_role="error"/>
+
+        <Button
+            android:id="@+id/retry_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/try_again"
+            app:ux_layout_role="retry"/>
+
+    </com.jayrave.uxLayouts.UxPercentFrameLayout>
+
+</LinearLayout>
