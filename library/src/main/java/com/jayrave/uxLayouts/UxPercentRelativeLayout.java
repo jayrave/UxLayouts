@@ -9,18 +9,21 @@ import android.util.AttributeSet;
 public class UxPercentRelativeLayout extends PercentRelativeLayout implements
         UxLayout<UxPercentRelativeLayout.LayoutParams> {
 
+    @NonNull private final UxLayoutChildrenManager mChildrenManager;
+
     public UxPercentRelativeLayout(Context context) {
-        super(context);
+        this(context, null);
     }
 
 
     public UxPercentRelativeLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
 
     public UxPercentRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        mChildrenManager = UxLayoutChildrenManager.attachNewManager(this);
     }
 
 

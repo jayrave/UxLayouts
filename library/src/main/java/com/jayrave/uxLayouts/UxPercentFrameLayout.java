@@ -9,18 +9,21 @@ import android.util.AttributeSet;
 public class UxPercentFrameLayout extends PercentFrameLayout implements
         UxLayout<UxPercentFrameLayout.LayoutParams> {
 
+    @NonNull private final UxLayoutChildrenManager mChildrenManager;
+
     public UxPercentFrameLayout(Context context) {
-        super(context);
+        this(context, null);
     }
 
 
     public UxPercentFrameLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
 
     public UxPercentFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mChildrenManager = UxLayoutChildrenManager.attachNewManager(this);
     }
 
 
