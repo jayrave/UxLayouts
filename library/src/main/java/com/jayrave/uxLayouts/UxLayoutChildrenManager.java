@@ -102,6 +102,12 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
 
 
     @Nullable
+    public View getLoadingView() {
+        return mLoadingView;
+    }
+
+
+    @Nullable
     public View getContentView() {
         return mContentView;
     }
@@ -120,14 +126,61 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
 
 
     @Nullable
-    public View getLoadingView() {
-        return mLoadingView;
+    public View getRetryView() {
+        return mRetryView;
     }
 
 
-    @Nullable
-    public View getRetryView() {
-        return mRetryView;
+    public void showOnlyLoadingView() {
+        setViewsVisibility(
+                Visibility.VISIBLE, Visibility.GONE, Visibility.GONE,
+                Visibility.GONE, Visibility.GONE
+        );
+    }
+
+
+    public void showOnlyContentView() {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.VISIBLE, Visibility.GONE,
+                Visibility.GONE, Visibility.GONE
+        );
+    }
+
+
+    public void showOnlyEmptyStateView() {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.GONE, Visibility.VISIBLE,
+                Visibility.GONE, Visibility.GONE
+        );
+    }
+
+
+    public void showOnlyErrorView() {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.GONE, Visibility.GONE,
+                Visibility.VISIBLE, Visibility.GONE
+        );
+    }
+
+
+    public void showOnlyRetryView() {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.GONE, Visibility.GONE,
+                Visibility.GONE, Visibility.VISIBLE
+        );
+    }
+
+
+    public void setViewsVisibility(
+            @NonNull Visibility loadingViewVisibility, @NonNull Visibility contentViewVisibility,
+            @NonNull Visibility emptyStateViewVisibility, @NonNull Visibility errorViewVisibility,
+            @NonNull Visibility retryViewVisibility) {
+
+        setViewVisibility(mLoadingView, loadingViewVisibility);
+        setViewVisibility(mContentView, contentViewVisibility);
+        setViewVisibility(mEmptyStateView, emptyStateViewVisibility);
+        setViewVisibility(mErrorView, errorViewVisibility);
+        setViewVisibility(mRetryView, retryViewVisibility);
     }
 
 
@@ -141,6 +194,15 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
         }
 
         return role;
+    }
+
+
+    @SuppressWarnings("ResourceType")
+    private static void setViewVisibility(@Nullable View view, @NonNull Visibility visibility) {
+        int visibilityInt = visibility.getValue();
+        if (view != null && view.getVisibility() != visibilityInt) {
+            view.setVisibility(visibilityInt);
+        }
     }
 
 
