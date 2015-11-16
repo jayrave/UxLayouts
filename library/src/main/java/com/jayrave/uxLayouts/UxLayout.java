@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
-public interface IUxLayout<LP extends ViewGroup.LayoutParams> {
+public interface UxLayout<LP extends ViewGroup.LayoutParams & UxLayoutHelper.UxLayoutParams> {
 
     @NonNull
     LP generateDefaultLayoutParams();

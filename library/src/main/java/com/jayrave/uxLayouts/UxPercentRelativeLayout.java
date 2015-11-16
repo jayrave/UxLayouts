@@ -7,7 +7,7 @@ import android.support.percent.PercentRelativeLayout;
 import android.util.AttributeSet;
 
 public class UxPercentRelativeLayout extends PercentRelativeLayout implements
-        IUxLayout<UxPercentRelativeLayout.LayoutParams> {
+        UxLayout<UxPercentRelativeLayout.LayoutParams> {
 
     public UxPercentRelativeLayout(Context context) {
         super(context);

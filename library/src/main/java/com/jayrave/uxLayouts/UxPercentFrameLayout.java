@@ -7,7 +7,7 @@ import android.support.percent.PercentFrameLayout;
 import android.util.AttributeSet;
 
 public class UxPercentFrameLayout extends PercentFrameLayout implements
-        IUxLayout<UxPercentFrameLayout.LayoutParams> {
+        UxLayout<UxPercentFrameLayout.LayoutParams> {
 
     public UxPercentFrameLayout(Context context) {
         super(context);
