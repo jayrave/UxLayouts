@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.percent.PercentRelativeLayout;
 import android.util.AttributeSet;
+import android.view.View;
 
 public class UxPercentRelativeLayout extends PercentRelativeLayout implements
         UxLayout<UxPercentRelativeLayout.LayoutParams> {
@@ -24,6 +25,71 @@ public class UxPercentRelativeLayout extends PercentRelativeLayout implements
     public UxPercentRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mChildrenManager = UxLayoutChildrenManager.attachNewManager(this);
+    }
+
+
+    @Nullable
+    @Override
+    public View getLoadingView() {
+        return mChildrenManager.getLoadingView();
+    }
+
+
+    @Nullable
+    @Override
+    public View getContentView() {
+        return mChildrenManager.getContentView();
+    }
+
+
+    @Nullable
+    @Override
+    public View getEmptyStateView() {
+        return mChildrenManager.getEmptyStateView();
+    }
+
+
+    @Nullable
+    @Override
+    public View getErrorView() {
+        return mChildrenManager.getErrorView();
+    }
+
+
+    @Nullable
+    @Override
+    public View getRetryView() {
+        return mChildrenManager.getRetryView();
+    }
+
+
+    @Override
+    public void showOnlyLoadingView() {
+        mChildrenManager.showOnlyLoadingView();
+    }
+
+
+    @Override
+    public void showOnlyContentView() {
+        mChildrenManager.showOnlyContentView();
+    }
+
+
+    @Override
+    public void showOnlyEmptyStateView() {
+        mChildrenManager.showOnlyEmptyStateView();
+    }
+
+
+    @Override
+    public void showOnlyErrorView() {
+        mChildrenManager.showOnlyErrorView();
+    }
+
+
+    @Override
+    public void showOnlyRetryView() {
+        mChildrenManager.showOnlyRetryView();
     }
 
 
