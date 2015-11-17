@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="UxLayout">
+        <attr name="ux_loading_layout_res_id" format="reference"/>
+        <attr name="ux_content_layout_res_id" format="reference"/>
+        <attr name="ux_empty_state_layout_res_id" format="reference"/>
+        <attr name="ux_error_layout_res_id" format="reference"/>
+        <attr name="ux_retry_layout_res_id" format="reference"/>
+    </declare-styleable>
+
     <declare-styleable name="UxLayout_Layout">
         <attr name="ux_layout_role" format="enum">
             <enum name="loading" value="0"/>
