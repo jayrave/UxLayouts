@@ -41,49 +41,4 @@ public class UxLayoutHelper {
         array.recycle();
         return new UxLayoutInfo(role);
     }
-
-
-    /**
-     * Container for information relevant to uxLayouts
-     */
-    public static class UxLayoutInfo {
-
-        @NonNull
-        private final Role mRole;
-
-        public UxLayoutInfo() {
-            this(Role.UNKNOWN);
-        }
-
-        public UxLayoutInfo(@NonNull Role role) {
-            mRole = role;
-        }
-
-        @NonNull
-        public Role getRole() {
-            return mRole;
-        }
-
-        public enum Role {
-            UNKNOWN,
-            LOADING,
-            CONTENT,
-            EMPTY_STATE,
-            ERROR,
-            RETRY
-        }
-    }
-
-
-    /**
-     * If a layout wants to support better api for proving good UX easily using this helper class,
-     * its {@code LayoutParams} subclass must implement this interface.
-     *
-     * Your {@code LayoutParams} subclass should contain an instance of {@link UxLayoutInfo} and the
-     * implementation of this interface should be a simple accessor.
-     */
-    public interface UxLayoutParams {
-        @NonNull
-        UxLayoutInfo getUxLayoutInfo();
-    }
 }

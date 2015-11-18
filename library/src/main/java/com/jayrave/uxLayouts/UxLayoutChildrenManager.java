@@ -5,9 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jayrave.uxLayouts.UxLayoutHelper.UxLayoutInfo;
-import com.jayrave.uxLayouts.UxLayoutHelper.UxLayoutParams;
-
 public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListener {
 
     @NonNull private ViewGroup mHost;

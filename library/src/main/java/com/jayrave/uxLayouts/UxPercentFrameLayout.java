@@ -107,11 +107,11 @@ public class UxPercentFrameLayout extends PercentFrameLayout implements
     }
 
 
-    public static class LayoutParams extends PercentFrameLayout.LayoutParams implements
-            UxLayoutHelper.UxLayoutParams {
+    public static class LayoutParams extends PercentFrameLayout.LayoutParams
+            implements UxLayoutParams {
 
         @Nullable
-        private UxLayoutHelper.UxLayoutInfo mUxLayoutInfo;
+        private UxLayoutInfo mUxLayoutInfo;
 
         public LayoutParams(@NonNull Context c, @NonNull AttributeSet attrs) {
             super(c, attrs);
@@ -129,9 +129,9 @@ public class UxPercentFrameLayout extends PercentFrameLayout implements
 
         @NonNull
         @Override
-        public UxLayoutHelper.UxLayoutInfo getUxLayoutInfo() {
+        public UxLayoutInfo getUxLayoutInfo() {
             if (mUxLayoutInfo == null) {
-                mUxLayoutInfo = new UxLayoutHelper.UxLayoutInfo();
+                mUxLayoutInfo = new UxLayoutInfo();
             }
 
             return mUxLayoutInfo;

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-public interface UxLayout<LP extends ViewGroup.LayoutParams & UxLayoutHelper.UxLayoutParams> {
+public interface UxLayout<LP extends ViewGroup.LayoutParams & UxLayoutParams> {
 
     @NonNull
     LP generateDefaultLayoutParams();
