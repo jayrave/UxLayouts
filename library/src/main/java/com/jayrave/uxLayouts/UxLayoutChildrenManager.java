@@ -2,6 +2,7 @@ package com.jayrave.uxLayouts;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,16 +15,30 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
     @Nullable private View mErrorView;
     @Nullable private View mRetryView;
 
+    @NonNull private final UxLayoutChildrenInflater mUxLayoutChildrenInflater;
+
     @NonNull
-    public static UxLayoutChildrenManager attachNewManager(@NonNull ViewGroup host) {
-        UxLayoutChildrenManager childrenManager = new UxLayoutChildrenManager(host);
+    public static UxLayoutChildrenManager attachNewManager(
+            @NonNull ViewGroup host, @Nullable AttributeSet attributeSet) {
+
+        UxLayoutChildrenManager childrenManager = new UxLayoutChildrenManager(host, attributeSet);
         host.setOnHierarchyChangeListener(childrenManager);
         return childrenManager;
     }
 
 
-    private UxLayoutChildrenManager(@NonNull ViewGroup host) {
+    private UxLayoutChildrenManager(@NonNull ViewGroup host, @Nullable AttributeSet attributeSet) {
+        if (!(host instanceof UxLayout)) {
+            throw new RuntimeException(
+                    "The passed in host must be an instance of " + UxLayout.class.getName()
+            );
+        }
+
         mHost = host;
+        mUxLayoutChildrenInflater = UxLayoutHelper.buildUxLayoutChildrenInflater(
+                host, attributeSet
+        );
+
         int childCount = mHost.getChildCount();
         for (int i = 0; i < childCount; i++) {
             onChildViewAdded(mHost, mHost.getChildAt(i));
@@ -100,71 +115,56 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
 
     @Nullable
     public View getLoadingView() {
-        return mLoadingView;
+        return getLoadingView(true);
     }
 
 
     @Nullable
     public View getContentView() {
-        return mContentView;
+        return getContentView(true);
     }
 
 
     @Nullable
     public View getEmptyStateView() {
-        return mEmptyStateView;
+        return getEmptyStateView(true);
     }
 
 
     @Nullable
     public View getErrorView() {
-        return mErrorView;
+        return getErrorView(true);
     }
 
 
     @Nullable
     public View getRetryView() {
-        return mRetryView;
+        return getRetryView(true);
     }
 
 
     public void showOnlyLoadingView() {
-        setViewsVisibility(
-                Visibility.VISIBLE, Visibility.GONE, Visibility.GONE,
-                Visibility.GONE, Visibility.GONE
-        );
+        showOnlyLoadingView(true);
     }
 
 
     public void showOnlyContentView() {
-        setViewsVisibility(
-                Visibility.GONE, Visibility.VISIBLE, Visibility.GONE,
-                Visibility.GONE, Visibility.GONE
-        );
+        showOnlyContentView(true);
     }
 
 
     public void showOnlyEmptyStateView() {
-        setViewsVisibility(
-                Visibility.GONE, Visibility.GONE, Visibility.VISIBLE,
-                Visibility.GONE, Visibility.GONE
-        );
+        showOnlyEmptyStateView(true);
     }
 
 
     public void showOnlyErrorView() {
-        setViewsVisibility(
-                Visibility.GONE, Visibility.GONE, Visibility.GONE,
-                Visibility.VISIBLE, Visibility.GONE
-        );
+        showOnlyErrorView(true);
     }
 
 
     public void showOnlyRetryView() {
-        setViewsVisibility(
-                Visibility.GONE, Visibility.GONE, Visibility.GONE,
-                Visibility.GONE, Visibility.VISIBLE
-        );
+        showOnlyRetryView(true);
     }
 
 
@@ -172,6 +172,138 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
             @NonNull Visibility loadingViewVisibility, @NonNull Visibility contentViewVisibility,
             @NonNull Visibility emptyStateViewVisibility, @NonNull Visibility errorViewVisibility,
             @NonNull Visibility retryViewVisibility) {
+
+        setViewsVisibility(
+                loadingViewVisibility, contentViewVisibility, emptyStateViewVisibility,
+                errorViewVisibility, retryViewVisibility, true, true, true, true, true
+        );
+    }
+
+
+    @Nullable
+    public View getLoadingView(boolean inflateLoadingViewIfRequiredAndPossible) {
+        if (inflateLoadingViewIfRequiredAndPossible) {
+            inflateLoadingViewIfRequiredAndPossible();
+        }
+
+        return mLoadingView;
+    }
+
+
+    @Nullable
+    public View getContentView(boolean inflateContentViewIfRequiredAndPossible) {
+        if (inflateContentViewIfRequiredAndPossible) {
+            inflateContentViewIfRequiredAndPossible();
+        }
+
+        return mContentView;
+    }
+
+
+    @Nullable
+    public View getEmptyStateView(boolean inflateEmptyStateViewIfRequiredAndPossible) {
+        if (inflateEmptyStateViewIfRequiredAndPossible) {
+            inflateEmptyStateViewIfRequiredAndPossible();
+        }
+
+        return mEmptyStateView;
+    }
+
+
+    @Nullable
+    public View getErrorView(boolean inflateErrorViewIfRequiredAndPossible) {
+        if (inflateErrorViewIfRequiredAndPossible) {
+            inflateErrorViewIfRequiredAndPossible();
+        }
+
+        return mErrorView;
+    }
+
+
+    @Nullable
+    public View getRetryView(boolean inflateRetryViewIfRequiredAndPossible) {
+        if (inflateRetryViewIfRequiredAndPossible) {
+            inflateRetryViewIfRequiredAndPossible();
+        }
+
+        return mRetryView;
+    }
+
+
+    public void showOnlyLoadingView(boolean inflateLoadingViewIfRequiredAndPossible) {
+        setViewsVisibility(
+                Visibility.VISIBLE, Visibility.GONE, Visibility.GONE,
+                Visibility.GONE, Visibility.GONE, inflateLoadingViewIfRequiredAndPossible,
+                false, false, false, false
+        );
+    }
+
+
+    public void showOnlyContentView(boolean inflateContentViewIfRequiredAndPossible) {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.VISIBLE, Visibility.GONE,
+                Visibility.GONE, Visibility.GONE, false,
+                inflateContentViewIfRequiredAndPossible, false, false, false
+        );
+    }
+
+
+    public void showOnlyEmptyStateView(boolean inflateEmptyStateViewIfRequiredAndPossible) {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.GONE, Visibility.VISIBLE,
+                Visibility.GONE, Visibility.GONE, false, false,
+                inflateEmptyStateViewIfRequiredAndPossible, false, false
+        );
+    }
+
+
+    public void showOnlyErrorView(boolean inflateErrorViewIfRequiredAndPossible) {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.GONE, Visibility.GONE,
+                Visibility.VISIBLE, Visibility.GONE, false, false,
+                false, inflateErrorViewIfRequiredAndPossible, false
+        );
+    }
+
+
+    public void showOnlyRetryView(boolean inflateRetryViewIfRequiredAndPossible) {
+        setViewsVisibility(
+                Visibility.GONE, Visibility.GONE, Visibility.GONE,
+                Visibility.GONE, Visibility.VISIBLE, false, false,
+                false, false, inflateRetryViewIfRequiredAndPossible
+        );
+    }
+
+
+    public void setViewsVisibility(
+            @NonNull Visibility loadingViewVisibility, @NonNull Visibility contentViewVisibility,
+            @NonNull Visibility emptyStateViewVisibility, @NonNull Visibility errorViewVisibility,
+            @NonNull Visibility retryViewVisibility,
+            boolean inflateLoadingViewIfRequiredAndPossible,
+            boolean inflateContentViewIfRequiredAndPossible,
+            boolean inflateEmptyStateViewIfRequiredAndPossible,
+            boolean inflateErrorViewIfRequiredAndPossible,
+            boolean inflateRetryViewIfRequiredAndPossible) {
+
+        if (inflateLoadingViewIfRequiredAndPossible) {
+            inflateLoadingViewIfRequiredAndPossible();
+        }
+
+        if (inflateContentViewIfRequiredAndPossible) {
+            inflateContentViewIfRequiredAndPossible();
+        }
+
+        if (inflateEmptyStateViewIfRequiredAndPossible) {
+            inflateEmptyStateViewIfRequiredAndPossible();
+        }
+
+        if (inflateErrorViewIfRequiredAndPossible) {
+            inflateErrorViewIfRequiredAndPossible();
+        }
+
+        if (inflateRetryViewIfRequiredAndPossible) {
+            inflateRetryViewIfRequiredAndPossible();
+        }
 
         setViewVisibility(mLoadingView, loadingViewVisibility);
         setViewVisibility(mContentView, contentViewVisibility);
@@ -191,6 +323,41 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
         }
 
         return role;
+    }
+
+
+    private void inflateLoadingViewIfRequiredAndPossible() {
+        if (mLoadingView == null) {
+            mUxLayoutChildrenInflater.inflateAndAddLoadingViewIfPossible();
+        }
+    }
+
+
+    private void inflateContentViewIfRequiredAndPossible() {
+        if (mContentView == null) {
+            mUxLayoutChildrenInflater.inflateAndAddContentViewIfPossible();
+        }
+    }
+
+
+    private void inflateEmptyStateViewIfRequiredAndPossible() {
+        if (mEmptyStateView == null) {
+            mUxLayoutChildrenInflater.inflateAndAddEmptyStateViewIfPossible();
+        }
+    }
+
+
+    private void inflateErrorViewIfRequiredAndPossible() {
+        if (mErrorView == null) {
+            mUxLayoutChildrenInflater.inflateAndAddErrorViewIfPossible();
+        }
+    }
+
+
+    private void inflateRetryViewIfRequiredAndPossible() {
+        if (mRetryView == null) {
+            mUxLayoutChildrenInflater.inflateAndAddRetryViewIfPossible();
+        }
     }
 
 

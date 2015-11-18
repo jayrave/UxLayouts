@@ -24,7 +24,7 @@ public class UxPercentFrameLayout extends PercentFrameLayout implements
 
     public UxPercentFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mChildrenManager = UxLayoutChildrenManager.attachNewManager(this);
+        mChildrenManager = UxLayoutChildrenManager.attachNewManager(this, attrs);
     }
 
 

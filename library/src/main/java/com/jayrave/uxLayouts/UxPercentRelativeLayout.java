@@ -24,7 +24,7 @@ public class UxPercentRelativeLayout extends PercentRelativeLayout implements
 
     public UxPercentRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mChildrenManager = UxLayoutChildrenManager.attachNewManager(this);
+        mChildrenManager = UxLayoutChildrenManager.attachNewManager(this, attrs);
     }
 
 
