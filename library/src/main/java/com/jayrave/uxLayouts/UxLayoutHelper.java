@@ -3,9 +3,52 @@ package com.jayrave.uxLayouts;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 public class UxLayoutHelper {
+
+    /**
+     * Constructs a {@link UxLayoutChildrenInflater} from attributes associated with a view
+     */
+    @NonNull
+    public static UxLayoutChildrenInflater buildUxLayoutChildrenInflater(
+            @NonNull ViewGroup viewGroup, @Nullable AttributeSet attrs) {
+
+        UxLayoutChildrenInflater uxLayoutChildrenInflater = new UxLayoutChildrenInflater(viewGroup);
+        if (attrs != null) {
+            int defaultResourceId = ResourceUtils.INVALID_RESOURCE_ID;
+            TypedArray array = viewGroup.getContext().obtainStyledAttributes(
+                    attrs, R.styleable.UxLayout
+            );
+
+            uxLayoutChildrenInflater.setLoadingViewLayoutResId(array.getResourceId(
+                    R.styleable.UxLayout_ux_loading_layout_res_id, defaultResourceId
+            ));
+
+            uxLayoutChildrenInflater.setContentViewLayoutResId(array.getResourceId(
+                    R.styleable.UxLayout_ux_content_layout_res_id, defaultResourceId
+            ));
+
+            uxLayoutChildrenInflater.setEmptyStateViewLayoutResId(array.getResourceId(
+                    R.styleable.UxLayout_ux_empty_state_layout_res_id, defaultResourceId
+            ));
+
+            uxLayoutChildrenInflater.setErrorViewLayoutResId(array.getResourceId(
+                    R.styleable.UxLayout_ux_error_layout_res_id, defaultResourceId
+            ));
+
+            uxLayoutChildrenInflater.setRetryViewLayoutResId(array.getResourceId(
+                    R.styleable.UxLayout_ux_retry_layout_res_id, defaultResourceId
+            ));
+
+            array.recycle();
+        }
+
+        return uxLayoutChildrenInflater;
+    }
+
 
     /**
      * Constructs a {@link UxLayoutInfo} from attributes associated with a View
