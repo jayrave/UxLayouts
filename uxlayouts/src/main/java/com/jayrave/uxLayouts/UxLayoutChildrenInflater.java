@@ -1,7 +1,6 @@
 package com.jayrave.uxLayouts;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,44 +19,34 @@ public class UxLayoutChildrenInflater {
     private int mRetryViewLayoutResId = ResourceUtils.INVALID_RESOURCE_ID;
 
     public UxLayoutChildrenInflater(@NonNull ViewGroup viewGroup) {
-        if (!(viewGroup instanceof UxLayout)) {
-            throw new RuntimeException(
-                    "The passed in view group must be an instance of " + UxLayout.class.getName()
-            );
-        }
+        Preconditions.checkNotNull(viewGroup, "Passed in view group shouldn't be null");
+        Preconditions.checkTruthiness(
+                viewGroup instanceof UxLayout,
+                "Passed in view group must be an instance of " + UxLayout.class.getCanonicalName()
+        );
 
         mViewGroup = viewGroup;
         mLayoutInflater = LayoutInflater.from(viewGroup.getContext());
     }
 
     public void inflateAndAddLoadingViewIfPossible() {
-        inflateAndAddViewIfPossible(
-                mLoadingViewLayoutResId, Role.LOADING
-        );
+        inflateAndAddViewIfPossible(mLoadingViewLayoutResId, Role.LOADING);
     }
 
     public void inflateAndAddContentViewIfPossible() {
-        inflateAndAddViewIfPossible(
-                mContentViewLayoutResId, Role.CONTENT
-        );
+        inflateAndAddViewIfPossible(mContentViewLayoutResId, Role.CONTENT);
     }
 
     public void inflateAndAddEmptyStateViewIfPossible() {
-        inflateAndAddViewIfPossible(
-                mEmptyStateViewLayoutResId, Role.EMPTY_STATE
-        );
+        inflateAndAddViewIfPossible(mEmptyStateViewLayoutResId, Role.EMPTY_STATE);
     }
 
     public void inflateAndAddErrorViewIfPossible() {
-        inflateAndAddViewIfPossible(
-                mErrorViewLayoutResId, Role.ERROR
-        );
+        inflateAndAddViewIfPossible(mErrorViewLayoutResId, Role.ERROR);
     }
 
     public void inflateAndAddRetryViewIfPossible() {
-        inflateAndAddViewIfPossible(
-                mRetryViewLayoutResId, Role.RETRY
-        );
+        inflateAndAddViewIfPossible(mRetryViewLayoutResId, Role.RETRY);
     }
 
     public void inflateAndAddViewIfPossible(int layoutResId, @NonNull Role forRole) {
@@ -69,28 +58,23 @@ public class UxLayoutChildrenInflater {
         }
     }
 
-    @Nullable
-    public Integer getLoadingViewLayoutResId() {
+    public int getLoadingViewLayoutResId() {
         return mLoadingViewLayoutResId;
     }
 
-    @Nullable
-    public Integer getContentViewLayoutResId() {
+    public int getContentViewLayoutResId() {
         return mContentViewLayoutResId;
     }
 
-    @Nullable
-    public Integer getEmptyStateViewLayoutResId() {
+    public int getEmptyStateViewLayoutResId() {
         return mEmptyStateViewLayoutResId;
     }
 
-    @Nullable
-    public Integer getErrorViewLayoutResId() {
+    public int getErrorViewLayoutResId() {
         return mErrorViewLayoutResId;
     }
 
-    @Nullable
-    public Integer getRetryViewLayoutResId() {
+    public int getRetryViewLayoutResId() {
         return mRetryViewLayoutResId;
     }
 

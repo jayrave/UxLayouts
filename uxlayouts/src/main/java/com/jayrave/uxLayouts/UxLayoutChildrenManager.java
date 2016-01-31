@@ -15,11 +15,13 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
     @Nullable private View mErrorView;
     @Nullable private View mRetryView;
 
-    @NonNull private final UxLayoutChildrenInflater mUxLayoutChildrenInflater;
+    @NonNull private final UxLayoutChildrenInflater mChildrenInflater;
 
     @NonNull
     public static UxLayoutChildrenManager attachNewManager(
             @NonNull ViewGroup host, @Nullable AttributeSet attributeSet) {
+
+        Preconditions.checkNotNull(host, "Passed in host shouldn't be null");
 
         UxLayoutChildrenManager childrenManager = new UxLayoutChildrenManager(host, attributeSet);
         host.setOnHierarchyChangeListener(childrenManager);
@@ -28,16 +30,14 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
 
 
     private UxLayoutChildrenManager(@NonNull ViewGroup host, @Nullable AttributeSet attributeSet) {
-        if (!(host instanceof UxLayout)) {
-            throw new RuntimeException(
-                    "The passed in host must be an instance of " + UxLayout.class.getName()
-            );
-        }
+        Preconditions.checkNotNull(host, "Passed in host shouldn't be null");
+        Preconditions.checkTruthiness(
+                host instanceof UxLayout,
+                "Passed in host must be an instance of " + UxLayout.class.getCanonicalName()
+        );
 
         mHost = host;
-        mUxLayoutChildrenInflater = UxLayoutHelper.buildUxLayoutChildrenInflater(
-                host, attributeSet
-        );
+        mChildrenInflater = UxLayoutHelper.buildUxLayoutChildrenInflater(host, attributeSet);
 
         int childCount = mHost.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -50,7 +50,8 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
     public void onChildViewAdded(View parent, View child) {
         throwIfNotEqual(mHost, parent);
 
-        // Set appropriate view (only one view can play a role at a time)
+        // One role can be played by only one child at a time. Only children that play a role
+        // are kept. Others are removed
         switch (getViewRole(child)) {
             case LOADING:
                 removeView(mHost, mLoadingView);
@@ -91,23 +92,23 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
         // Loose appropriate view's reference if required
         switch (getViewRole(child)) {
             case LOADING:
-                if (checkEquality(mLoadingView, child)) mLoadingView = null;
+                if (areSame(mLoadingView, child)) mLoadingView = null;
                 break;
 
             case CONTENT:
-                if (checkEquality(mContentView, child)) mContentView = null;
+                if (areSame(mContentView, child)) mContentView = null;
                 break;
 
             case EMPTY_STATE:
-                if (checkEquality(mEmptyStateView, child)) mEmptyStateView = null;
+                if (areSame(mEmptyStateView, child)) mEmptyStateView = null;
                 break;
 
             case ERROR:
-                if (checkEquality(mErrorView, child)) mErrorView = null;
+                if (areSame(mErrorView, child)) mErrorView = null;
                 break;
 
             case RETRY:
-                if (checkEquality(mRetryView, child)) mRetryView = null;
+                if (areSame(mRetryView, child)) mRetryView = null;
                 break;
         }
     }
@@ -328,35 +329,35 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
 
     private void inflateLoadingViewIfRequiredAndPossible() {
         if (mLoadingView == null) {
-            mUxLayoutChildrenInflater.inflateAndAddLoadingViewIfPossible();
+            mChildrenInflater.inflateAndAddLoadingViewIfPossible();
         }
     }
 
 
     private void inflateContentViewIfRequiredAndPossible() {
         if (mContentView == null) {
-            mUxLayoutChildrenInflater.inflateAndAddContentViewIfPossible();
+            mChildrenInflater.inflateAndAddContentViewIfPossible();
         }
     }
 
 
     private void inflateEmptyStateViewIfRequiredAndPossible() {
         if (mEmptyStateView == null) {
-            mUxLayoutChildrenInflater.inflateAndAddEmptyStateViewIfPossible();
+            mChildrenInflater.inflateAndAddEmptyStateViewIfPossible();
         }
     }
 
 
     private void inflateErrorViewIfRequiredAndPossible() {
         if (mErrorView == null) {
-            mUxLayoutChildrenInflater.inflateAndAddErrorViewIfPossible();
+            mChildrenInflater.inflateAndAddErrorViewIfPossible();
         }
     }
 
 
     private void inflateRetryViewIfRequiredAndPossible() {
         if (mRetryView == null) {
-            mUxLayoutChildrenInflater.inflateAndAddRetryViewIfPossible();
+            mChildrenInflater.inflateAndAddRetryViewIfPossible();
         }
     }
 
@@ -370,7 +371,7 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
     }
 
 
-    private static boolean checkEquality(@Nullable View view1, @Nullable View view2) {
+    private static boolean areSame(@Nullable View view1, @Nullable View view2) {
         return view1 == view2;
     }
 
@@ -383,8 +384,8 @@ public class UxLayoutChildrenManager implements ViewGroup.OnHierarchyChangeListe
 
 
     private static void throwIfNotEqual(@NonNull View expected, @NonNull View actual) {
-        if (expected != actual) {
-            throw new RuntimeException("Expected: " + expected + "; actual: " + actual);
-        }
+        Preconditions.checkTruthiness(
+                expected == actual, "Expected: " + expected + "; actual: " + actual
+        );
     }
 }

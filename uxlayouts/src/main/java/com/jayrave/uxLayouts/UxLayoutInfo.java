@@ -15,6 +15,7 @@ public class UxLayoutInfo {
     }
 
     public UxLayoutInfo(@NonNull Role role) {
+        Preconditions.checkNotNull(role, "Role shouldn't be null");
         mRole = role;
     }
 
@@ -24,6 +25,7 @@ public class UxLayoutInfo {
     }
 
     public final void setRole(@NonNull Role role) {
+        Preconditions.checkNotNull(role, "Role shouldn't be null");
         mRole = role;
     }
 
