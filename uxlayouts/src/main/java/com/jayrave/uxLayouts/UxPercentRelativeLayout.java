@@ -3,9 +3,10 @@ package com.jayrave.uxLayouts;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.percent.PercentRelativeLayout;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.jayrave.percent.PercentRelativeLayout;
 
 public class UxPercentRelativeLayout extends PercentRelativeLayout implements
         UxLayout<UxPercentRelativeLayout.LayoutParams> {
@@ -102,7 +103,7 @@ public class UxPercentRelativeLayout extends PercentRelativeLayout implements
 
     @NonNull
     @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+    public LayoutParams generateLayoutParams(@NonNull AttributeSet attrs) {
         return new LayoutParams(getContext(), attrs);
     }
 
