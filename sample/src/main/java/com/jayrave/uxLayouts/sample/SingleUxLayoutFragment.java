@@ -44,10 +44,6 @@ public class SingleUxLayoutFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final Observable<Void> observable = Observable.just((Void) null)
-                .delay(LOADING_DURATION_IN_MS, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread());
-
         // Populate spinner
         List<String> modesStrings = new ArrayList<>();
         modesStrings.add(getString(R.string.load_and_show_content));
@@ -60,7 +56,7 @@ public class SingleUxLayoutFragment extends Fragment {
                 getActivity(), android.R.layout.simple_dropdown_item_1line, modesStrings
         ));
 
-        // Show further detail to user on error & retry states
+        // Show further detail to user on error state
         final UxLayout uxLayout = (UxLayout) view.findViewById(R.id.ux_layout);
         View errorView = uxLayout.getErrorView();
         if (errorView != null) {
@@ -75,6 +71,7 @@ public class SingleUxLayoutFragment extends Fragment {
             });
         }
 
+        // Show further detail to user on retry state
         View retryView = uxLayout.getRetryView();
         if (retryView != null) {
             retryView.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +82,10 @@ public class SingleUxLayoutFragment extends Fragment {
             });
         }
 
+        final Observable<Void> delayObservable = Observable.just((Void) null)
+                .delay(LOADING_DURATION_IN_MS, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread());
+
         // Start loading depending on the selection option
         modes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -94,7 +95,7 @@ public class SingleUxLayoutFragment extends Fragment {
                 }
 
                 uxLayout.showOnlyLoadingView();
-                mSubscription = observable.subscribe(
+                mSubscription = delayObservable.subscribe(
                         getAppropriateOnNextAction(position, uxLayout)
                 );
             }
@@ -104,6 +105,15 @@ public class SingleUxLayoutFragment extends Fragment {
                 modes.setSelection(SHOW_CONTENT);
             }
         });
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+        }
     }
 
 
@@ -117,6 +127,4 @@ public class SingleUxLayoutFragment extends Fragment {
             default: throw new RuntimeException("Out of bounds: " + position);
         }
     }
-
-
 }

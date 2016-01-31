@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.jayrave.uxLayouts.sample.SingleUxLayoutFragment">
 
     <Spinner
         android:id="@+id/modes"
@@ -16,12 +17,15 @@
         android:id="@+id/ux_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.jayrave.uxLayouts.sample.SingleUxLayoutFragment">
+        app:ux_empty_state_layout_res_id="@layout/empty_state_view"
+        app:ux_error_layout_res_id="@layout/error_view"
+        app:ux_retry_layout_res_id="@layout/retry_view">
 
         <ImageView
             android:id="@+id/content_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/cd_image"
             android:scaleType="centerInside"
             android:src="@drawable/image1"
             app:ux_layout_role="content"/>
@@ -32,30 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:ux_layout_role="loading"/>
-
-        <TextView
-            android:id="@+id/empty_state_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/empty_state_text"
-            app:ux_layout_role="empty_state"/>
-
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:id="@+id/error_view"
-            android:layout_width="@dimen/error_icon_dimen"
-            android:layout_height="@dimen/error_icon_dimen"
-            android:layout_gravity="center"
-            app:iiv_icon="gmd-disc-full"
-            app:ux_layout_role="error"/>
-
-        <Button
-            android:id="@+id/retry_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/try_again"
-            app:ux_layout_role="retry"/>
 
     </com.jayrave.uxLayouts.UxPercentFrameLayout>
 

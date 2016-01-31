@@ -7,4 +7,5 @@
     <string name="load_and_show_error">Load and show error</string>
     <string name="load_and_show_retry">Load and show retry</string>
     <string name="try_again">Try again</string>
+    <string name="cd_image">Image</string>
 </resources>
