@@ -3,18 +3,19 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'uxlayouts'
+    publishedGroupId = 'com.jayrave.layouts'
+    publishedArtifactId = 'ux-layouts'
 
-    publishedGroupId = 'com.jayrave.uxlayouts'
+    bintrayRepo = 'android'
+    bintrayName = publishedArtifactId
+
     libraryName = 'UxLayouts'
-    artifact = 'uxlayouts'
-
+    libraryVersionName = '1.0'
     libraryDescription = 'Layouts to provide better UX to android users'
-    libraryVersion = '0.1.0'
 
     siteUrl = 'https://github.com/jayrave/UxLayouts'
     gitUrl = 'https://github.com/jayrave/UxLayouts.git'
+    issuesUrl = 'https://github.com/jayrave/UxLayouts/issues'
 
     developerId = 'jayrave'
     developerName = 'Jayanthan Raveendiran'
@@ -22,8 +23,9 @@ ext {
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
+    allLicenses = ['Apache-2.0']
 }
+
 
 android {
     compileSdkVersion 23
@@ -33,38 +35,62 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        versionName libraryVersionName
     }
 }
 
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.jayrave.layouts:percent-layouts:1.1'
 }
 
-// -------------------------------------------------------------------------------------------------
-// From https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle
-// Maven Group ID for the artifact
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+
 group = publishedGroupId
+version = libraryVersionName
+
 
 install {
     repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
         pom {
             project {
                 packaging 'aar'
                 groupId publishedGroupId
-                artifactId artifact
+                artifactId publishedArtifactId
 
                 name libraryName
                 description libraryDescription
                 url siteUrl
+
+                licenses {
+                    license {
+                        name licenseName
+                        url licenseUrl
+                    }
+                }
 
                 developers {
                     developer {
@@ -83,53 +109,32 @@ install {
         }
     }
 }
-// -------------------------------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------------------------------
-// From https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle
-version = libraryVersion
-
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-
-// Bintray
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+    user = properties['bintray.user']
+    key = properties['bintray.apikey']
+
+    publish = true
     configurations = ['archives']
+
     pkg {
         repo = bintrayRepo
         name = bintrayName
         desc = libraryDescription
         websiteUrl = siteUrl
+        issueTrackerUrl = issuesUrl
         vcsUrl = gitUrl
         licenses = allLicenses
-        publish = true
+        labels = ['aar', 'android', 'ux', 'layout']
         publicDownloadNumbers = true
+
         version {
-            desc = libraryDescription
+            name = libraryVersionName
+            released = new Date()
         }
     }
 }
-// -------------------------------------------------------------------------------------------------
