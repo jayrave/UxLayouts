@@ -24,23 +24,23 @@ public class UxLayoutHelper {
             );
 
             uxLayoutChildrenInflater.setLoadingViewLayoutResId(array.getResourceId(
-                    R.styleable.UxLayout_ux_loading_layout_res_id, defaultResourceId
+                    R.styleable.UxLayout_ux_loading_layout, defaultResourceId
             ));
 
             uxLayoutChildrenInflater.setContentViewLayoutResId(array.getResourceId(
-                    R.styleable.UxLayout_ux_content_layout_res_id, defaultResourceId
+                    R.styleable.UxLayout_ux_content_layout, defaultResourceId
             ));
 
             uxLayoutChildrenInflater.setEmptyStateViewLayoutResId(array.getResourceId(
-                    R.styleable.UxLayout_ux_empty_state_layout_res_id, defaultResourceId
+                    R.styleable.UxLayout_ux_empty_state_layout, defaultResourceId
             ));
 
             uxLayoutChildrenInflater.setErrorViewLayoutResId(array.getResourceId(
-                    R.styleable.UxLayout_ux_error_layout_res_id, defaultResourceId
+                    R.styleable.UxLayout_ux_error_layout, defaultResourceId
             ));
 
             uxLayoutChildrenInflater.setRetryViewLayoutResId(array.getResourceId(
-                    R.styleable.UxLayout_ux_retry_layout_res_id, defaultResourceId
+                    R.styleable.UxLayout_ux_retry_layout, defaultResourceId
             ));
 
             array.recycle();

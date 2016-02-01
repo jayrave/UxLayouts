@@ -17,8 +17,8 @@
         android:id="@+id/ux_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:ux_error_layout_res_id="@layout/error_view"
-        app:ux_retry_layout_res_id="@layout/retry_view">
+        app:ux_error_layout="@layout/error_view"
+        app:ux_retry_layout="@layout/retry_view">
 
         <ImageView
             android:id="@+id/content_view"
