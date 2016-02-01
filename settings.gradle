@@ -1,2 +1,2 @@
-include ':uxlayouts'
+include ':ux-layouts'
 include ':sample'
