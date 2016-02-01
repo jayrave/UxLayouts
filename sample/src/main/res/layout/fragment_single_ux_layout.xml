@@ -17,7 +17,6 @@
         android:id="@+id/ux_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:ux_empty_state_layout_res_id="@layout/empty_state_view"
         app:ux_error_layout_res_id="@layout/error_view"
         app:ux_retry_layout_res_id="@layout/retry_view">
 
@@ -30,12 +29,14 @@
             android:src="@drawable/image1"
             app:ux_layout_role="content"/>
 
-        <ProgressBar
-            android:id="@+id/loading_view"
+        <include layout="@layout/loading_view"/>
+
+        <include
+            layout="@layout/empty_state_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:ux_layout_role="loading"/>
+            app:ux_layout_role="empty_state"/>
 
     </com.jayrave.uxLayouts.UxPercentFrameLayout>
 
